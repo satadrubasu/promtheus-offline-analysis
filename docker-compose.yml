@@ -1,0 +1,38 @@
+on: '3'
+
+services:
+  grafana:
+    image: grafana/grafana/grafana:7.5.0
+    container_name: grafana_container
+    restart: always
+    ports:
+      - 3000:3000
+    networks:
+      - monitoring_network
+    volumes:
+      - grafana-volume:/var/lib/grafana
+      - ./grafana/provisioning:/usr/share/grafana/conf/provisioning/
+    environment:
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel
+      - GF_PATHS_PROVISIONING=/usr/share/grafana/conf/provisioning/
+  prometheus:
+    image: prom/prometheus
+    container_name: prom_container
+    restart: always
+    ports:
+      - 9090:9090
+    networks:
+      - monitoring_network
+    volumes:
+      - ${PROM_SNAPSHOT_LOC}:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=${RETENTION_DAYS}'
+networks:
+  monitoring_network:
+volumes:
+  grafana-volume:
+
+        
+

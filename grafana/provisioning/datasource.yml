@@ -1,0 +1,34 @@
+apiVersion: 1
+
+# list of datasources that should be deleted from the database
+deleteDatasources:
+  - name: Prometheus-ds
+    orgId: 1
+
+# list of datasources to insert/update depending on whats available in the database
+datasources:
+  #<string, required> name of the datasource.
+- name: Prometheus-ds
+  #<string,required> datasource type.
+  type: prometheus
+  #<string,required> access mode direct OR proxy
+  acess: direct
+  #<int> org ID, will default to orgID 1 if not specified
+  orgId: 1
+  # <string> url
+  url: http://127.0.0.1:9090
+  #<string> database password , if used
+  password:
+  #<string> database user, if used
+  user:
+  database:
+  basicAuth: false
+  basicAuthUser: admin
+  basicAuhPassword: admin
+  #<bool> enable/disable with credentials headers
+  withCredentials:
+  isDefault: true
+  version: 1
+  #<bool> allow users to edit datasources from the UI
+  editable: true
+
